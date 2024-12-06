@@ -1,56 +1,90 @@
 //{ Driver Code Starts
-// Initial Template for Java
-
 import java.util.*;
 
-class Rat {
+public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int t = sc.nextInt();
+        int t = sc.nextInt(); // Number of test cases
+        sc.nextLine();        // Consume the newline character
 
         while (t-- > 0) {
-            int n = sc.nextInt();
-            int[][] a = new int[n][n];
-            for (int i = 0; i < n; i++)
-                for (int j = 0; j < n; j++) a[i][j] = sc.nextInt();
+            String input = sc.nextLine();
+
+            // Replace ][ with ],[
+            input = input.replace("][", "],[");
+
+            ArrayList<ArrayList<Integer>> mat = new ArrayList<>();
+            String[] rows = input.split("],\\s*\\[");
+
+            for (String row : rows) {
+                row = row.replaceAll("[\\[\\]]", ""); // Remove any surrounding brackets
+                ArrayList<Integer> intRow = new ArrayList<>();
+                for (String num : row.split(",")) {
+                    intRow.add(Integer.parseInt(num.trim()));
+                }
+                mat.add(intRow);
+            }
 
             Solution obj = new Solution();
-            ArrayList<String> res = obj.findPath(a);
-            Collections.sort(res);
-            if (res.size() > 0) {
-                for (int i = 0; i < res.size(); i++) System.out.print(res.get(i) + " ");
-                System.out.println();
+            ArrayList<String> result = obj.findPath(mat);
+
+            if (result.isEmpty()) {
+                System.out.println("[]");
             } else {
-                System.out.println(-1);
+                for (String res : result) {
+                    System.out.print(res + " ");
+                }
+                System.out.println();
             }
+            System.out.println("~");
         }
+        sc.close();
     }
 }
 
 // } Driver Code Ends
 
 
-
-
+// User function Template for Java
 class Solution {
+    // Function to find all possible paths
+    public ArrayList<String> findPath(ArrayList<ArrayList<Integer>> mat) {
+        // code here
+        
+        ArrayList<String> list = new ArrayList<>();
+        boolean [][]visited = new boolean [mat.size()][mat.size()];
+        helper(0, 0, mat, list, visited, "");
+        return list;
+        
+    }
     
-    void help(int[][] matrix,int n,int i,int j,ArrayList<String> ans,String temp){
-        if(i<0||j<0||i==n||j==n||matrix[i][j]==0)return;
-        if(i==n-1 && j==n-1){
-            ans.add(temp);
+    private void helper(int row, int col, ArrayList<ArrayList<Integer>> board, ArrayList<String> list, boolean [][]visited, String psf){
+        
+        if(row < 0 || row == board.size() || col < 0 || col == board.size() || board.get(row).get(col) == 0 || visited[row][col]){
             return;
         }
-        matrix[i][j]=0;
-        help(matrix,n,i+1,j,ans,temp+'D');
-        help(matrix,n,i-1,j,ans,temp+'U');
-        help(matrix,n,i,j+1,ans,temp+'R');
-        help(matrix,n,i,j-1,ans,temp+'L');
-        matrix[i][j]=1;
+        
+        if(row == board.size() - 1 && col == board.size() - 1){
+            list.add(psf);
+        }
+        
+        visited[row][col] = true;
+        
+        // down
+        helper(row + 1, col, board, list, visited, psf + "D");
+        
+        // left
+        helper(row, col - 1, board, list, visited, psf + "L");
+        
+        // right
+        helper(row, col + 1, board, list, visited, psf + "R");
+        
+        // up
+        helper(row - 1, col, board, list, visited, psf + "U");
+        
+        visited[row][col] = false;
+        
     }
-    public ArrayList<String> findPath(int[][] mat) {
-        // Your code here
-        ArrayList<String> ans = new ArrayList<>();
-        help(mat,mat.length,0,0,ans,"");
-        return ans;
-    }
+    
 }
+
