@@ -13,19 +13,20 @@ class GFG {
             int k = Integer.parseInt(br.readLine().trim());
 
             String[] line1 = br.readLine().trim().split(" ");
-            int[] arr1 = new int[line1.length];
+            int[] a = new int[line1.length];
             for (int i = 0; i < line1.length; i++) {
-                arr1[i] = Integer.parseInt(line1[i]);
+                a[i] = Integer.parseInt(line1[i]);
             }
 
             String[] line2 = br.readLine().trim().split(" ");
-            int[] arr2 = new int[line2.length];
+            int[] b = new int[line2.length];
             for (int i = 0; i < line2.length; i++) {
-                arr2[i] = Integer.parseInt(line2[i]);
+                b[i] = Integer.parseInt(line2[i]);
             }
 
             Solution ob = new Solution();
-            System.out.println(ob.kthElement(k, arr1, arr2));
+            System.out.println(ob.kthElement(a, b, k));
+            System.out.println("~");
         }
     }
 }
@@ -35,27 +36,45 @@ class GFG {
 
 
 
+
+
 // User function Template for Java
-
 class Solution {
-    public long kthElement(int k, int arr1[], int arr2[]) {
-          
-        int arr3[] = new int[arr1.length + arr2.length];
-
-        // Copy elements from arr1 and arr2 into arr3
-        System.arraycopy(arr1, 0, arr3, 0, arr1.length);
-        System.arraycopy(arr2, 0, arr3, arr1.length, arr2.length);
-        
-        // Sort the merged array
-        Arrays.sort(arr3);
-        
-        // Get the k-th element (1-based index)
-        if (k > 0 && k <= arr3.length) {
-            int kthElement = arr3[k - 1];
-            return kthElement ;
-        } else {
-            // System.out.println("Index out of bounds");
-            return -1;
+    public int kthElement(int a[], int b[], int k) {
+        // code here
+        int count=0;
+        int i=0,j=0;
+        while(i<a.length&&j<b.length){
+            if(a[i]<=b[j]){
+                count++;
+                if(count==k){
+                    return a[i];
+                }
+                i++;
+            }else{
+                count++;
+                if(count==k){
+                    return b[j];
+                }
+                j++;
+            }
         }
+        while(i<a.length){
+            count++;
+                if(count==k){
+                    return a[i];
+                }
+                i++;
+        }
+        while(j<b.length){
+            count++;
+                if(count==k){
+                    return b[j];
+                }
+                j++;
+        }
+        return -1;
+        
     }
 }
+
