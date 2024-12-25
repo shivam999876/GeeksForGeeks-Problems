@@ -35,55 +35,34 @@ public class Main {
 // } Driver Code Ends
 
 
+
+
 //Back-end complete function Template for Java
 class Solution {
-    public void setMatrixZeroes(int[][] matrix) {
-        int rows = matrix.length;
-        int cols = matrix[0].length;
-        boolean firstRowZero = false, firstColZero = false;
-        for (int j = 0; j < cols; j++) {
-            if (matrix[0][j] == 0) {
-                firstRowZero = true;
-                break;
-            }
-        }
-        for (int i = 0; i < rows; i++) {
-            if (matrix[i][0] == 0) {
-                firstColZero = true;
-                break;
-            }
-        }
-        for (int i = 1; i < rows; i++) {
-            for (int j = 1; j < cols; j++) {
-                if (matrix[i][j] == 0) {
-                    matrix[i][0] = 0;
-                    matrix[0][j] = 0;
+    public void setMatrixZeroes(int[][] mat) {
+        int n = mat.length, m = mat[0].length;
+        boolean firstColZero = false;
+
+        // Use first row and column as markers and check if first column needs zeroing
+        for (int i = 0; i < n; i++) {
+            if (mat[i][0] == 0) firstColZero = true;
+            for (int j = 1; j < m; j++) {
+                if (mat[i][j] == 0) {
+                    mat[i][0] = 0;
+                    mat[0][j] = 0;
                 }
             }
         }
-        for (int i = 1; i < rows; i++) {
-            if (matrix[i][0] == 0) {
-                for (int j = 1; j < cols; j++) {
-                    matrix[i][j] = 0;
+
+        // Update the matrix except the first row and column
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = m - 1; j >= 1; j--) {
+                if (mat[i][0] == 0 || mat[0][j] == 0) {
+                    mat[i][j] = 0;
                 }
             }
-        }
-        for (int j = 1; j < cols; j++) {
-            if (matrix[0][j] == 0) {
-                for (int i = 1; i < rows; i++) {
-                    matrix[i][j] = 0;
-                }
-            }
-        }
-        if (firstRowZero) {
-            for (int j = 0; j < cols; j++) {
-                matrix[0][j] = 0;
-            }
-        }
-        if (firstColZero) {
-            for (int i = 0; i < rows; i++) {
-                matrix[i][0] = 0;
-            }
+            // Handle the first column separately
+            if (firstColZero) mat[i][0] = 0;
         }
     }
 }
