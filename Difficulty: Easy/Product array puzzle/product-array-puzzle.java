@@ -6,22 +6,24 @@ import java.util.*;
 
 class GFG {
     public static void main(String args[]) throws IOException {
-        Scanner sc = new Scanner(System.in);
-        int t = sc.nextInt();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int t = Integer.parseInt(br.readLine());
         while (t > 0) {
-            int n = sc.nextInt();
-            int[] array = new int[n];
+            String inputLine[] = br.readLine().trim().split(" ");
+            int n = inputLine.length;
+            int arr[] = new int[n];
             for (int i = 0; i < n; i++) {
-                array[i] = sc.nextInt();
+                arr[i] = Integer.parseInt(inputLine[i]);
             }
             Solution ob = new Solution();
-            long[] ans = new long[n];
-            ans = ob.productExceptSelf(array);
+            int[] ans = new int[n];
+            ans = ob.productExceptSelf(arr);
 
             for (int i = 0; i < n; i++) {
                 System.out.print(ans[i] + " ");
             }
             System.out.println();
+            System.out.println("~");
             t--;
         }
     }
@@ -31,28 +33,36 @@ class GFG {
 
 
 // User function Template for Java
-
 class Solution {
-    public static long[] productExceptSelf(int nums[]) {
+    public static int[] productExceptSelf(int arr[]) {
         // code here
-        long temp = 1, c = 0;
-        int n = nums.length, index = -1;
-        for(int i=0;i<n;i++){
-            if(nums[i] != 0) temp *= nums[i];
-            else{
-                c++;
-                index=i;
-            }
-        }
-        long ans[] = new long[n];
-        if(c>1)return ans;
-        if(c==1){
-            ans[index]=temp;
-            return ans;
-        }
-        for(int i=0; i<n; i++){
-            ans[i] = temp/nums[i];
-        }
-        return ans;
+        int[] res = new int[arr.length];
+       int product = 1;
+       boolean flag = false;
+       int cnt0 = 0;
+       
+       for(int i=0; i<arr.length; i++){
+           if(arr[i] == 0){
+               cnt0++;
+               flag = true;
+               continue;
+           }
+           product *= arr[i];
+       }
+       
+       if(cnt0 > 1) return res;
+       
+       for(int i=0; i<arr.length; i++){
+           if(arr[i] != 0 && flag == true){
+               res[i] = 0;
+           }else if(arr[i] == 0 && flag == true){
+               res[i] = product;
+           }else{
+               res[i] = product/arr[i]; 
+           }
+          
+       }
+       
+       return res;
     }
 }
