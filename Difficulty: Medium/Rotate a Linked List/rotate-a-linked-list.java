@@ -58,6 +58,7 @@ class Solution {
 }
 
 
+
 //{ Driver Code Starts.
 
 public class GFG {
@@ -98,6 +99,8 @@ public class GFG {
             Solution ob = new Solution();
             head = ob.rotate(head, k);
             printList(head);
+
+            System.out.println("~");
         }
     }
 }
