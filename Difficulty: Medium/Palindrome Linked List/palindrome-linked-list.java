@@ -55,6 +55,8 @@ class Driver_code {
             boolean f = new Solution().isPalindrome(head);
 
             System.out.println(f ? "true" : "false");
+
+            System.out.println("~");
         }
     }
 }
@@ -77,20 +79,30 @@ class Node
 
 class Solution {
     // Function to check whether the list is palindrome.
-    boolean isPalindrome(Node head) {
-        // Your code here
-        ArrayDeque<Integer> st = new ArrayDeque<>();
-        Node curr = head;
-        while(curr != null){
-            st.push(curr.data);
-            curr = curr.next;
+    static boolean isPalindrome(Node head) {
+        if(head==null || head.next==null) return true;
+        
+        Stack<Node> st = new Stack<>();
+        Node temp = new Node(-1);
+        temp.next = head;
+        Node slow = temp;
+        Node fast = temp;
+        
+        while(fast!=null && fast.next!=null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            st.push(slow);
         }
-        curr = head;
-        while(curr != null){
-            if(st.pop() != curr.data)
-            return false;
-            curr = curr.next;
+        
+        temp = slow.next;
+        
+        if(fast==null) st.pop();
+        
+        while(!st.isEmpty()) {
+            if(temp.data != st.pop().data) return false;
+            temp = temp.next;
         }
+        
         return true;
     }
 }
