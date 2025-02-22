@@ -1,23 +1,26 @@
 //{ Driver Code Starts
-//Initial Template for Java
+// Initial Template for Java
 
 import java.io.*;
 import java.util.*;
 
-class GFG{
-    public static void main(String args[])throws IOException
-    {
+class GFG {
+    public static void main(String args[]) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         int t = Integer.parseInt(in.readLine());
-        while(t-- > 0){
+        while (t-- > 0) {
             String S = in.readLine();
-            
+
             Solution ob = new Solution();
             System.out.println(ob.maxLength(S));
+
+            System.out.println("~");
         }
     }
 }
 // } Driver Code Ends
+
+
 
 
 //User function Template for Java
