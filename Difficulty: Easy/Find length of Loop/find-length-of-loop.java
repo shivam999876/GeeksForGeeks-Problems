@@ -51,11 +51,15 @@ public class LinkedList {
 
             Solution ob = new Solution();
             System.out.println(ob.countNodesinLoop(head));
+
+            System.out.println("~");
         }
     }
 }
 
 // } Driver Code Ends
+
+
 
 
 /*
