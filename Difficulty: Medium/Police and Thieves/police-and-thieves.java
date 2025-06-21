@@ -1,9 +1,4 @@
-//{ Driver Code Starts
-// Initial Template for Java
-import java.util.*;
 
-
-// } Driver Code Ends
 
 class Solution {
     
@@ -50,29 +45,4 @@ class Solution {
     }
 }
 
-//{ Driver Code Starts.
-public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
 
-        int t = Integer.parseInt(sc.nextLine().trim());
-
-        while (t-- > 0) {
-            String[] input = sc.nextLine().trim().split(" ");
-            char[] arr = new char[input.length];
-
-            for (int i = 0; i < input.length; i++) {
-                arr[i] = input[i].charAt(0);
-            }
-
-            int k = Integer.parseInt(sc.nextLine().trim());
-
-            Solution ob = new Solution();
-            System.out.println(ob.catchThieves(arr, k));
-            System.out.println("~");
-        }
-
-        sc.close();
-    }
-}
-// } Driver Code Ends
