@@ -1,42 +1,51 @@
-//{ Driver Code Starts
-import java.io.*;
-import java.util.*;
-
-class Sorting {
-    public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int t = Integer.parseInt(br.readLine());
-        for (int g = 0; g < t; g++) {
-            String[] str = (br.readLine()).trim().split(" ");
-            int arr[] = new int[str.length];
-            for (int i = 0; i < str.length; i++) arr[i] = Integer.parseInt(str[i]);
-            System.out.println(new Solution().circularSubarraySum(arr));
-            // System.out.println("~");
-        }
-    }
-}
-// } Driver Code Ends
-
 class Solution {
-    public int circularSubarraySum(int arr[]) {
-        int prefixSum = 0;
-        int maxSum = Integer.MIN_VALUE;
-        
-        int sum = 0;
-        for (int num : arr) {
-            sum += num;
-            prefixSum += num;
-            maxSum = Math.max(maxSum, sum);
-            sum = Math.max(sum, 0);
+    private void print(int[] arr){
+        for(int it:arr){
+            System.out.print(it+" ");
         }
-
-        int currSum = 0;
-        for (int num : arr) {
-            currSum += num;
-            currSum = Math.min(0, currSum);
-            maxSum = Math.max(maxSum, prefixSum - currSum);
+        System.out.println("");
+    }
+    private int kadane_algo(int[] arr){
+        int n=arr.length;
+        int currsum=arr[0];
+        int overallsum=arr[0];
+        for(int i=1;i<arr.length;i++){
+            if(currsum<=0){
+                currsum=arr[i];
+            }
+            else{
+                currsum+=arr[i];
+            }
+            overallsum=Math.max(overallsum,currsum);
         }
-        
-        return maxSum;
+        return overallsum;
+    }
+    private int inv_kadane_algo(int[] arr){
+        int n=arr.length;
+        int currsum=arr[0];
+        int overallsum=arr[0];
+        for(int i=1;i<arr.length;i++){
+            if(currsum<0){
+                currsum+=arr[i];
+            }
+            else{
+                currsum=arr[i];
+            }
+            overallsum=Math.min(overallsum,currsum);
+        }
+        return overallsum;
+    }
+    public int maxCircularSum(int arr[]){
+        int n=arr.length;
+        int total_sum=0;
+        for(int it:arr){
+            total_sum+=it;
+        }
+        int maximum_subarray_sum=kadane_algo(arr);
+        int minimum_subarray_sum=inv_kadane_algo(arr);
+        if(maximum_subarray_sum>0){
+            return Math.max(maximum_subarray_sum,total_sum-minimum_subarray_sum);
+        }
+        return maximum_subarray_sum;
     }
 }
