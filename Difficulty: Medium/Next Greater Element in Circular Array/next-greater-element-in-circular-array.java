@@ -1,5 +1,5 @@
 class Solution {
-    public ArrayList<Integer> nextLargerElement(int[] arr) {
+    public ArrayList<Integer> nextGreater(int[] arr) {
         // code here
         int n = arr.length;
         ArrayList<Integer> res = new ArrayList<>(Collections.nCopies(n, -1));
