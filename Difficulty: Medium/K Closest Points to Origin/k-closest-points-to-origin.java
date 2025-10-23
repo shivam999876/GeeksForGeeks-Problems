@@ -1,56 +1,33 @@
-//{ Driver Code Starts
-import java.util.*;
-
-
-// } Driver Code Ends
 class Solution {
-    public int[][] kClosest(int[][] points, int k) {
-        // Your code here
-        int res[][] = new int[k][2];
-        Arrays.sort(points, (a,b) -> {
-            return (a[0]*a[0] + a[1]*a[1]) - (b[0]*b[0] + b[1]*b[1]);
-        });
-        int idx = 0;
-        while(idx < k){
-            res[idx] = points[idx];
-            idx++;
-        }
-        return res;
-    }
-}
-
-//{ Driver Code Starts.
-
-public class Main {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
-        int t = scanner.nextInt();
-
-        while (t-- > 0) {
-            int k = scanner.nextInt();
-            int n = scanner.nextInt();
-            int[][] points = new int[n][2];
-            for (int i = 0; i < n; i++) {
-                points[i][0] = scanner.nextInt();
-                points[i][1] = scanner.nextInt();
-            }
-            Solution solution = new Solution();
-            int[][] ans = solution.kClosest(points, k);
-
-            Arrays.sort(ans, (a, b) -> {
-                if (a[0] != b[0]) {
-                    return Integer.compare(a[0], b[0]);
+    public ArrayList<ArrayList<Integer>> kClosest(int[][] points, int k) {
+        // code here
+         ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
+        PriorityQueue<int[]> pq = new PriorityQueue<>(
+            (a, b) -> b[0] - a[0]
+        );
+        int n = points.length;
+        
+        for(int i=0; i<n;i++){
+            int curr_dist[] = new int[]{getEucledianDistance(points[i]), i};
+            
+            if(pq.size()<k)
+            pq.add(curr_dist);
+            
+            else{
+                if(curr_dist[0] < pq.peek()[0]){
+                    pq.poll();
+                    pq.add(curr_dist);
                 }
-                return Integer.compare(a[1], b[1]);
-            });
-            for (int[] point : ans) {
-                System.out.println(point[0] + " " + point[1]);
             }
-            System.out.println("~");
         }
-
-        scanner.close();
+       
+        while(!pq.isEmpty()){
+            int curr_idx = pq.poll()[1];
+            ans.add(new ArrayList<>(Arrays.asList(points[curr_idx][0], points[curr_idx][1])));
+        }
+        return ans;
+    }
+     int getEucledianDistance(int[] point) {
+        return point[0] * point[0] + point[1] * point[1];
     }
 }
-// } Driver Code Ends
