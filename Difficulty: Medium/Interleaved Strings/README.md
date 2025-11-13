@@ -5,10 +5,10 @@
 <li><span style="font-size: 14pt;">The length of s3 must be equal to the combined length of s1 and s2.</span></li>
 </ol>
 <p><span style="font-size: 14pt;"><strong>Examples :</strong></span></p>
-<pre><span style="font-size: 14pt;"><span style="font-size: 18.6667px;"><strong>Input: </strong>s1 = "AAB", s2 = "AAC", s3 = "AAAABC", <strong>
+<pre><span style="font-size: 14pt;"><span style="font-size: 18.6667px;"><strong>Input: </strong>s1 = "AAB", s2 = "AAC", s3 = "AAAABC"<strong>
 Output: </strong>true<strong>
 Explanation: </strong>The string "AAAABC" has all characters of the other two strings and in the same order.</span></span></pre>
-<pre><span style="font-size: 14pt;"><span style="font-size: 18.6667px;"><strong>Input: </strong>s1 = "AB", s2 = "C", s3 = "ACB", <strong>
+<pre><span style="font-size: 14pt;"><span style="font-size: 18.6667px;"><strong>Input: </strong>s1 = "AB", s2 = "C", s3 = "ACB"<strong>
 Output: </strong>true
 <strong>Explanation: </strong>s3 has all characters of s1 and s2 and retains order of characters of s1.</span></span></pre>
 <pre><span style="font-size: 14pt;"><span style="font-size: 18.6667px;"><strong>Input: </strong>s1 = "YX", s2 = "X", s3 = "XXY"<strong>
