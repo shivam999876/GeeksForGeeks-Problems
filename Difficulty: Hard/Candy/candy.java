@@ -1,27 +1,5 @@
-//{ Driver Code Starts
-// Initial Template for Java
 
-import java.io.*;
-import java.lang.*;
-import java.math.*;
-import java.util.*;
 
-class GFG {
-    public static void main(String[] args) throws IOException {
-        Scanner sc = new Scanner(System.in);
-        int T = Integer.parseInt(sc.nextLine());
-        while (T-- > 0) {
-            String[] arr1Str = sc.nextLine().split(" ");
-            int[] arr = Arrays.stream(arr1Str).mapToInt(Integer::parseInt).toArray();
-            Solution obj = new Solution();
-            int ans = obj.minCandy(arr);
-            System.out.println(ans);
-            System.out.println("~");
-        }
-    }
-}
-
-// } Driver Code Ends
 
 
 
