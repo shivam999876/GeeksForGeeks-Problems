@@ -1,23 +1,29 @@
 class Solution {
-    public ArrayList<Integer> findGreater(int[] arr) {
+    public ArrayList<Integer> nextFreqGreater(int[] arr) {
         // code here
-        int n = arr.length;
-        ArrayList<Integer> result = new ArrayList<>(Collections.nCopies(n, -1));
-        Map<Integer, Integer> frequencyMap = new HashMap<>();
-        for(int num : arr){
-            frequencyMap.put(num, frequencyMap.getOrDefault(num ,0) + 1);
-        }
-        Stack<Integer> stack = new Stack<>();
-        for(int i = n - 1; i >= 0; i--){
-            int currentFreq = frequencyMap.get(arr[i]);
-            while(!stack.isEmpty() && frequencyMap.get(stack.peek()) <= currentFreq){
-                stack.pop();
-            }   
-            if(!stack.isEmpty()){
-                result.set(i, stack.peek());
+        int max = Integer.MIN_VALUE;
+        for(int i = 0; i < arr.length; i++){
+            if(max < arr[i])
+                max = arr[i];
             }
-            stack.push(arr[i]);
-        }
-        return result;
+            int[] num = new int[max+1];
+            for(int i = 0; i < arr.length; i++){
+                num[arr[i]]++;
+            }
+            ArrayList<Integer> list = new ArrayList<>();
+            for(int i = 0; i < arr.length - 1; i++){
+                boolean flag = true;
+                for(int j = i + 1; j < arr.length; j++){
+                    if(num[arr[i]]<num[arr[j]]){
+                        list.add(arr[j]);
+                        flag = false;
+                        break;
+                    }
+                }
+                if(flag)
+                list.add(-1);
+            }
+            list.add(-1);
+            return list;
     }
 }
