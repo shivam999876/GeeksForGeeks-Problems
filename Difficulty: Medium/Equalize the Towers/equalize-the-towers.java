@@ -1,7 +1,7 @@
 class Solution {
     public int minCost(int[] heights, int[] cost) {
         // code here
-        int low = Integer.MAX_VALUE;
+         int low = Integer.MAX_VALUE;
         int high = Integer.MIN_VALUE;
         for(int h: heights){
             low = Math.min(low, h);
