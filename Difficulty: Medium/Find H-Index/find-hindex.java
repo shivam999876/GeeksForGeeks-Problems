@@ -1,7 +1,7 @@
 class Solution {
     public int hIndex(int[] citations) {
         // code here
-         int n = citations.length;
+        int n = citations.length;
         int maxCitation = 0;
         for (int citation : citations) {
             maxCitation = Math.max(maxCitation, citation);
