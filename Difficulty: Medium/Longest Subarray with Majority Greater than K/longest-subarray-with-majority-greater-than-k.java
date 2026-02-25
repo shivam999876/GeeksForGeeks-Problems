@@ -1,7 +1,7 @@
 class Solution {
     public int longestSubarray(int[] arr, int k) {
         // Code Here
-         int n = arr.length;
+        int n = arr.length;
         Map<Integer, Integer> prefIdx = new HashMap<>();
         int sum = 0, res = 0;
         for(int i = 0; i < n; i++){
