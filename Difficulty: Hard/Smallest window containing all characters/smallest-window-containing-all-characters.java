@@ -1,48 +1,22 @@
 class Solution {
-    
-    public static String smallestWindow(String s1, String s2) {
-        if (s2.length() > s1.length() || s2.isEmpty()) {
-            return "";
-        }
-        
-        HashMap<Character, Integer> map = new HashMap<>();
-        HashMap<Character, Integer> helper = new HashMap<>();
-        int match = 0;
-        int n = s2.length();
-        String ans = null;
-        
-        for(int i=0; i<n; i++) {
-            map.put(s2.charAt(i), map.getOrDefault(s2.charAt(i), 0) + 1);
-        }
-        
-        int i=0, j=0;
-        while(i<s1.length()) {
-            char currentChar = s1.charAt(i);
-            helper.put(currentChar, helper.getOrDefault(currentChar, 0) + 1);
-            
-            if(map.containsKey(currentChar) && helper.get(currentChar) <= map.get(currentChar)) {
-                match++;
+    public static String minWindow(String s, String p) {
+    int[]cnt=new int[128];
+    int req=p.length(),left=-1,min=s.length()+1;
+    for(char c:p.toCharArray()){
+        ++cnt[c];
+    }
+    for(int l=0,r=0;r<s.length();r++){
+        if(--cnt[s.charAt(r)]>=0)
+        --req;
+        while(req==0){
+            if(r-l+1<min){
+                left=l;
+                min=r-l+1;
             }
-            
-            while(match == n) {
-                String currentWindow = s1.substring(j, i + 1);
-                
-                if (ans == null || ans.length() > currentWindow.length()) {
-                    ans = currentWindow;
-                }
-                  
-                char leftChar = s1.charAt(j);
-                helper.put(leftChar, helper.get(leftChar) - 1);
-                
-                if(map.containsKey(leftChar) && helper.get(leftChar) < map.get(leftChar))
-                    match--;
-                
-                j++;
-            }
-            
-            i++;
+            if(++cnt[s.charAt(l++)]>0)
+            ++req;
         }
-        
-        return ans == null ? "" : ans;
+    }
+      return left==-1?"":s.substring(left,left+min);
     }
 }
