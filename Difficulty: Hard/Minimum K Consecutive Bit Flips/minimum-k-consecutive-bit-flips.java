@@ -1,7 +1,7 @@
 class Solution {
     public int kBitFlips(int[] arr, int k) {
         // code here
-       int n = arr.length;
+        int n = arr.length;
        int[] flipped = new int[n];
        int flip = 0;
        int operations = 0;
