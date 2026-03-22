@@ -1,63 +1,49 @@
-//{ Driver Code Starts
-import java.io.*;
-import java.lang.*;
-import java.util.*;
-
-class GFG {
-    public static void main(String[] args) throws IOException {
-        Scanner sc = new Scanner(System.in);
-        int t = sc.nextInt();
-
-        while (t-- > 0) {
-            int n = sc.nextInt();
-            int m = sc.nextInt();
-
-            int mat[][] = new int[n][m];
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < m; j++) mat[i][j] = sc.nextInt();
-            }
-            Solution obj = new Solution();
-            int ans = obj.orangesRotting(mat);
-            System.out.println(ans);
-            System.out.println("~");
+class Solution {
+    class State {
+        int r, c, t;
+        
+        State(int _r, int _c, int _t) {
+            this.r = _r;
+            this.c = _c;
+            this.t = _t;
         }
     }
-}
-// } Driver Code Ends
-
-
-class Solution {
-    public int orangesRotting(int[][] mat) {
-        int n = mat.length, m = mat[0].length;
-        Queue<int[]> queue = new LinkedList<>();
-        int fresh = 0, time = 0;
+    
+    public int orangesRot(int[][] mat) {
         
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (mat[i][j] == 2) queue.offer(new int[]{i, j});
+        int m = mat.length, n = mat[0].length;
+        Queue<State> q = new LinkedList<State>();
+        
+        int fresh = 0;
+        for(int i=0; i<m; i++) {
+            for(int j=0; j<n; j++) {
+                if(mat[i][j] == 2) {
+                    q.offer(new State(i, j, 0));
+                }
                 else if (mat[i][j] == 1) fresh++;
             }
         }
         
-        int[] dx = {-1, 1, 0, 0};
-        int[] dy = {0, 0, -1, 1};
-        
-        while (!queue.isEmpty() && fresh > 0) {
-            int size = queue.size();
-            for (int k = 0; k < size; k++) {
-                int[] cell = queue.poll();
-                for (int d = 0; d < 4; d++) {
-                    int x = cell[0] + dx[d], y = cell[1] + dy[d];
-                    if (x >= 0 && x < n && y >= 0 && y < m && mat[x][y] == 1) {
-                        mat[x][y] = 2;
-                        queue.offer(new int[]{x, y});
-                        fresh--;
-                    }
+        int mt = 0;
+        while(!q.isEmpty()) {
+            State s = q.poll();
+            
+            mt = Math.max(mt, s.t);
+            
+            int[][] del = {{-1, 0}, {0, +1}, {+1, 0}, {0, -1}};
+            for(int i=0; i<4; i++) {
+                int nr = s.r + del[i][0];
+                int nc = s.c + del[i][1];
+                
+                if((nr >= 0 && nr < m) && (nc >= 0 && nc < n) && mat[nr][nc] == 1) {
+                    q.offer(new State(nr, nc, s.t + 1));
+                    mat[nr][nc] = 2;
+                    fresh--;
                 }
             }
-            time++;
         }
         
-        return fresh == 0 ? time : -1;
+        if(fresh != 0) return -1;
+        return mt;
     }
 }
