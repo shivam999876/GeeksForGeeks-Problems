@@ -1,82 +1,72 @@
-//{ Driver Code Starts
-import java.util.*;
-
-public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int tc = sc.nextInt();
-        while (tc-- > 0) {
-            int V = sc.nextInt();
-            int E = sc.nextInt();
-            int[][] edges = new int[E][2];
-            for (int i = 0; i < E; i++) {
-                edges[i][0] = sc.nextInt();
-                edges[i][1] = sc.nextInt();
-            }
-
-            Solution obj = new Solution();
-            ArrayList<Integer> ans = obj.articulationPoints(V, edges);
-            Collections.sort(ans);
-            for (int val : ans) {
-                System.out.print(val + " ");
-            }
-            System.out.println();
-            System.out.println("~");
-        }
-    }
-}
-// } Driver Code Ends
-
-
 class Solution {
     static ArrayList<Integer> articulationPoints(int V, int[][] edges) {
         ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
         for (int i = 0; i < V; i++) adj.add(new ArrayList<>());
-        for (int[] edge : edges) {
-            adj.get(edge[0]).add(edge[1]);
-            adj.get(edge[1]).add(edge[0]);
+
+        for (int[] e : edges) {
+            int u = e[0], v = e[1];
+            adj.get(u).add(v);
+            adj.get(v).add(u);
         }
 
-        int[] tin = new int[V];
+        int[] disc = new int[V];
         int[] low = new int[V];
-        boolean[] vis = new boolean[V];
-        boolean[] isArticulation = new boolean[V];
-        int[] timer = {0};
+        int[] parent = new int[V];
+        int[] childCount = new int[V];
+        int[] itIndex = new int[V];
+        boolean[] ap = new boolean[V];
 
-        for (int i = 0; i < V; i++) {
-            if (!vis[i]) {
-                dfs(i, -1, adj, vis, tin, low, timer, isArticulation);
+        Arrays.fill(parent, -1);
+
+        int time = 1;
+        Deque<Integer> stack = new ArrayDeque<>();
+
+        for (int start = 0; start < V; start++) {
+            if (disc[start] != 0) continue;
+
+            stack.push(start);
+
+            while (!stack.isEmpty()) {
+                int u = stack.peek();
+
+                if (disc[u] == 0) {
+                    disc[u] = low[u] = time++;
+                }
+
+                if (itIndex[u] < adj.get(u).size()) {
+                    int v = adj.get(u).get(itIndex[u]++);
+
+                    if (v == parent[u]) continue;
+
+                    if (disc[v] == 0) {
+                        parent[v] = u;
+                        childCount[u]++;
+                        stack.push(v);
+                    } else {
+                        low[u] = Math.min(low[u], disc[v]);
+                    }
+                } else {
+                    stack.pop();
+
+                    int p = parent[u];
+                    if (p == -1) {
+                        if (childCount[u] > 1) ap[u] = true;
+                    } else {
+                        low[p] = Math.min(low[p], low[u]);
+                        if (parent[p] != -1 && low[u] >= disc[p]) {
+                            ap[p] = true;
+                        }
+                    }
+                }
             }
         }
 
         ArrayList<Integer> ans = new ArrayList<>();
         for (int i = 0; i < V; i++) {
-            if (isArticulation[i]) ans.add(i);
+            if (ap[i]) ans.add(i);
         }
-        if (ans.size() == 0) ans.add(-1);
-        return ans;
-    }
 
-    static void dfs(int u, int parent, ArrayList<ArrayList<Integer>> adj, boolean[] vis, int[] tin, int[] low, int[] timer, boolean[] isArticulation) {
-        vis[u] = true;
-        tin[u] = low[u] = timer[0]++;
-        int children = 0;
-        
-        for (int v : adj.get(u)) {
-            if (v == parent) continue;
-            if (!vis[v]) {
-                dfs(v, u, adj, vis, tin, low, timer, isArticulation);
-                low[u] = Math.min(low[u], low[v]);
-                if (low[v] >= tin[u] && parent != -1) {
-                    isArticulation[u] = true;
-                }
-                children++;
-            } else {
-                low[u] = Math.min(low[u], tin[v]);
-            }
-        }
-        if (parent == -1 && children > 1) {
-            isArticulation[u] = true;
-        }
+        if (ans.isEmpty()) ans.add(-1);
+        return ans;
     }
 }
